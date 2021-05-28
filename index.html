@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset=utf-8>
+	
+	<style>
+		h1 {
+			font-size: 30px;
+			line-height: 36px;
+			text-align: center;
+		}
+		canvas {
+			background: #282925;
+			display: block;
+		}
+		.demo{
+			display: flex;
+			justify-content: center;
+		}
+		.menu {
+			overflow: auto;
+			padding: 16px;
+			background-color: #f6f8fa;
+			border: 0.5px solid #ddd;
+			border-radius: 3px;
+			max-height: 700px;
+			max-width: 200px;
+			min-width: 200px;
+			padding: 50px;
+			font-size: 20px;
+			text-align: left;
+		}/*
+		#instruments {
+			font-size: 50px;
+		}*/
+	</style>
+	
+</head>
+
+<body>
+	<h1>RAYTRAYCING DEMO</h1>
+	
+	<div class = "demo" id = "demo">
+		<canvas onmousemove = "onMouseMove(event)" id = "lightDemo" width = 800 height = 600></canvas>
+		
+		<div class = "menu" id = "menu">
+			<h2>Menu:</h2>
+			
+			<div id = "instruments">
+			<input type = "radio" id = "light" value = "light" name = "settings" checked>
+				<lable for = "light">light</lable>
+			<input type = "radio" id = "walls" value = "walls" name = "settings">
+				<lable for = "walls">walls</lable>
+			</div>
+			
+		</div>
+		
+	</div>
+	
+	<script src = "scripts.js"></script>
+</body>
