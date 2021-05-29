@@ -6,6 +6,7 @@ const drawDelay = 1000 / FPS;
 
 let Demo = function() {
 	this.canvas = document.getElementById("lightDemo");
+	this.canvas.addEventListener("mousemove", onMouseMove);
 	this.canvas.addEventListener("click", onMouseClick);
 	this.g = this.canvas.getContext("2d");
 	
@@ -31,10 +32,10 @@ let Demo = function() {
 	this.drawPolygon = function(x, y, points, color = "black"){
 		this.g.fillStyle = color;
 		this.g.beginPath();
-		this.g.moveTo(points[0][0] + x, points[0][1] + y);
+		this.g.moveTo(points[0][0], points[0][1]);
 		
 		for(let [x2, y2] of points){
-			this.g.lineTo(x + x2, y + y2);
+			this.g.lineTo(x2,y2);
 		}
 		
 		this.g.closePath();
@@ -49,6 +50,7 @@ let Demo = function() {
 		let rect = this.canvas.getBoundingClientRect();
 		this.mousePos = [e.clientX - rect.left, 
 						 e.clientY - rect.top];
+		return this.mousePos;
 	};
 	
 }
@@ -84,12 +86,22 @@ let demo = new Demo();
 
 let walls = [[100, 100, 600, 400]]; //, [200, 100, 300, 600]
 
+let markedWalls = new Set();
+
+let clickPoint = false;
+
 (function(){
 
 	light.create(WIDTH / 2, HEIGHT / 2);
 	
+	document.getElementById("menu").addEventListener("click", applyInputs);
+	
 	inputs.light = document.getElementById("light");
 	inputs.walls = document.getElementById("walls");
+	inputs.lightType1 = document.getElementById("light-type1");
+	inputs.lightType2 = document.getElementById("light-type2");
+	inputs.wallsSet = document.getElementById("walls-set");
+	inputs.wallsDelete = document.getElementById("walls-delete");
 	
 	setInterval(drawDemo, drawDelay);
 
@@ -104,12 +116,15 @@ function drawDemo(){
 	demo.clearScreen();
 	
 	drawWalls();
-	if(inputs.light.checked)drawLight();
+	
+	drawLights();
 	
 }
 
-function drawLight(){
+function drawLights(){
 	let [mouseX = 0, mouseY = 0] = demo.mousePos;
+	
+	let points = [];
 	
 	for(let [x2, y2] of light.rays){
 		
@@ -132,19 +147,46 @@ function drawLight(){
 			
 		}
 		
-		demo.drawLineXY(mouseX, mouseY, x2, y2);
-		demo.drawLine(x2, y2, 2 , 2 , "yellow", 2);
+		if(inputs.light.checked) {
 		
-		
+			if(inputs.lightType1.checked){
+				drawLightType1(mouseX, mouseY, x2, y2);
+			}else{
+				points.push([x2, y2]);
+			}
+		}
 		
 	}
 	
-	//demo.drawPolygon(mouseX, mouseY, light.rays);
+	if(points[0]){
+		drawLightType2(mouseX, mouseY, points);
+	}
+	
+}
+
+function drawLightType1(x, y, x2, y2){
+	demo.drawLineXY(x, y, x2, y2);
+	demo.drawLine(x2, y2, 2 , 2 , "yellow", 2);
+}
+
+function drawLightType2(x, y, points){
+	demo.drawPolygon(x, y, points, "#a8aba2");
 }
 
 function drawWalls(){
-	for(let [x, y, x2, y2] of walls){
-		demo.drawLineXY(x, y, x2, y2, "green", 5);
+	walls.forEach(function([x, y, x2, y2], index){
+		if(markedWalls.has(index)){
+			demo.drawLineXY(x, y, x2, y2, "blue", 5);
+		}
+		else{
+			demo.drawLineXY(x, y, x2, y2, "green", 5);
+		}
+	});
+	
+	let [mouseX, mouseY] = demo.mousePos;
+	if(clickPoint){
+		let [x, y] = clickPoint;
+		demo.drawLineXY(x, y, mouseX, mouseY, "blue", 5);
 	}
 }
 
@@ -173,24 +215,66 @@ function checkLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4){
 		return false;
 }
 
-let clickPoint = false;
-
 function onMouseClick(e){
 	if(inputs.walls.checked){
-		let [mouseX, mouseY] = demo.mousePos;
-		if(!clickPoint){
-			clickPoint = [mouseX, mouseY];
-		}else{
-			walls.push([clickPoint[0], clickPoint[1], mouseX, mouseY]);
-			clickPoint = false;
+		
+		if(inputs.wallsSet.checked){
+			
+			let [mouseX, mouseY] = demo.mousePos;
+			if(!clickPoint){
+				clickPoint = [mouseX, mouseY];
+			}else{
+				walls.push([clickPoint[0], clickPoint[1], mouseX, mouseY]);
+				clickPoint = false;
+			}
+		}else {
+			
+			walls = walls.filter((item, index) => {
+				if(!markedWalls.has(index)) return true;
+			});
+			
+			/*for(let index of markedWalls){
+				walls.splice(index, 1);
+			}*/
+			markedWalls.clear();
 		}
 	}else{
 		clickPoint = false;
 	}
 }
 
+function applyInputs(e) {
+	if(inputs.walls.checked){
+		inputs.wallsSet.disabled = false;
+		inputs.wallsDelete.disabled = false;
+		
+		inputs.lightType1.disabled = true;
+		inputs.lightType2.disabled = true;
+	}else {
+		inputs.lightType1.disabled = false;
+		inputs.lightType2.disabled = false;
+		
+		inputs.wallsSet.disabled = true;
+		inputs.wallsDelete.disabled = true;
+	}
+}
+
 function onMouseMove(e){
-	demo.setMousePos(e);
+	let [mouseX, mouseY] = demo.setMousePos(e);
+	
+	if(inputs.wallsDelete.checked){
+		walls.forEach(function([x, y, x2, y2], index){
+			if(checkLineIntersection(x, y, x2, y2, mouseX, mouseY-2, mouseX, mouseY+2) || 
+			checkLineIntersection(x, y, x2, y2, mouseX-2, mouseY, mouseX+2, mouseY)){
+				
+				markedWalls.add(index);
+				
+			}else{
+				markedWalls.delete(index);
+			}
+		});
+	}
+	
 }
 
 

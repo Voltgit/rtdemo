@@ -19,17 +19,26 @@
 		}
 		.menu {
 			overflow: auto;
-			padding: 16px;
 			background-color: #f6f8fa;
 			border: 0.5px solid #ddd;
 			border-radius: 3px;
 			max-height: 700px;
-			max-width: 200px;
+			//max-width: 200px;
 			min-width: 200px;
-			padding: 50px;
+			padding-left: 15px;
+			padding-right: 15px;
 			font-size: 20px;
 			text-align: left;
-		}/*
+		}
+		.settings{
+			overflow: auto;
+			padding: 16px;
+			background-color: #f6f8ff;
+			border: 1.5px solid #ddd;
+			border-radius: 3px;
+			min-width: 200px;
+		}
+		/*
 		#instruments {
 			font-size: 50px;
 		}*/
@@ -41,16 +50,32 @@
 	<h1>RAYTRAYCING DEMO</h1>
 	
 	<div class = "demo" id = "demo">
-		<canvas onmousemove = "onMouseMove(event)" id = "lightDemo" width = 800 height = 600></canvas>
+		<canvas id = "lightDemo" width = 800 height = 600></canvas>
 		
 		<div class = "menu" id = "menu">
 			<h2>Menu:</h2>
 			
 			<div id = "instruments">
-			<input type = "radio" id = "light" value = "light" name = "settings" checked>
-				<lable for = "light">light</lable>
-			<input type = "radio" id = "walls" value = "walls" name = "settings">
-				<lable for = "walls">walls</lable>
+				<div class = "settings" id = "light-settings">
+					<input type = "radio" id = "light" value = "light" name = "settings" checked>
+					<lable for = "light">Лучи</lable>
+					<div class = "settings" id = "light-settings-options">
+						<input type = "radio" id = "light-type1" name = "light-settings-buttons" checked>
+						<label for = "light-type1">Классические</lable>
+						<input type = "radio" id = "light-type2" name = "light-settings-buttons">
+						<label for = "light-type2">Умные</label>
+					</div>
+				</div>
+				<div class = "settings" id = "walls-settings">
+					<input type = "radio" id = "walls" value = "walls" name = "settings">
+					<lable for = "walls">Стенки</lable>
+					<div class = "settings" id = "walls-settings">
+						<input type = "radio" id = "walls-set" name = "walls-settings-buttons" checked disabled>
+						<label for = "walls-set">Установить</label>
+						<input type = "radio" id = "walls-delete" name = "walls-settings-buttons" disabled>
+						<label for = "walls-delete">Удалить</label>
+					</div>
+				</div>
 			</div>
 			
 		</div>
