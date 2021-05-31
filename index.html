@@ -3,46 +3,7 @@
 <head>
 	<meta charset=utf-8>
 	
-	<style>
-		h1 {
-			font-size: 30px;
-			line-height: 36px;
-			text-align: center;
-		}
-		canvas {
-			background: #282925;
-			display: block;
-		}
-		.demo{
-			display: flex;
-			justify-content: center;
-		}
-		.menu {
-			overflow: auto;
-			background-color: #f6f8fa;
-			border: 0.5px solid #ddd;
-			border-radius: 3px;
-			max-height: 700px;
-			//max-width: 200px;
-			min-width: 200px;
-			padding-left: 15px;
-			padding-right: 15px;
-			font-size: 20px;
-			text-align: left;
-		}
-		.settings{
-			overflow: auto;
-			padding: 16px;
-			background-color: #f6f8ff;
-			border: 1.5px solid #ddd;
-			border-radius: 3px;
-			min-width: 200px;
-		}
-		/*
-		#instruments {
-			font-size: 50px;
-		}*/
-	</style>
+	<link rel="stylesheet" href="styles.css" type="text/css"/>
 	
 </head>
 
@@ -57,23 +18,43 @@
 			
 			<div id = "instruments">
 				<div class = "settings" id = "light-settings">
-					<input type = "radio" id = "light" value = "light" name = "settings" checked>
-					<lable for = "light">Лучи</lable>
-					<div class = "settings" id = "light-settings-options">
+					<input type = "radio" id = "light" value = "light" name = "settings">
+					<label for = "light">Лучи</label>
+					<div class = "settings" id = "light-settings">
 						<input type = "radio" id = "light-type1" name = "light-settings-buttons" checked>
-						<label for = "light-type1">Классические</lable>
+						<label for = "light-type1">Классические</label>
 						<input type = "radio" id = "light-type2" name = "light-settings-buttons">
-						<label for = "light-type2">Умные</label>
+						<label for = "light-type2">Заливка</label>
 					</div>
 				</div>
 				<div class = "settings" id = "walls-settings">
 					<input type = "radio" id = "walls" value = "walls" name = "settings">
-					<lable for = "walls">Стенки</lable>
+					<label for = "walls">Стенки</label>
 					<div class = "settings" id = "walls-settings">
-						<input type = "radio" id = "walls-set" name = "walls-settings-buttons" checked disabled>
+						<input type = "radio" id = "walls-set" name = "walls-settings-buttons" checked>
 						<label for = "walls-set">Установить</label>
-						<input type = "radio" id = "walls-delete" name = "walls-settings-buttons" disabled>
+						<input type = "radio" id = "walls-delete" name = "walls-settings-buttons">
 						<label for = "walls-delete">Удалить</label>
+					</div>
+				</div>
+				<div class = "settings" id = "mirrors-settings">
+					<input type = "radio" id = "mirrors" value = "mirrors" name = "settings">
+					<label for = "mirrors">Зеркала</label>
+						<div class = "settings" id = "mirrors-settings">
+							<input type = "radio" id = "mirrors-set" name = "mirrors-settings-buttons" checked>
+							<label for = "mirrors-set">Установить</label>
+							<input type = "radio" id = "mirrors-delete" name = "mirrors-settings-buttons">
+							<label for = "mirrors-delete">Удалить</label>
+						</div>
+				</div>
+				<div class = "settings" id = "lasers-settings">
+					<input type = "radio" id = "lasers" name = "settings" checked>
+					<label for = "lasers">Лазер</label>
+					<div class = "settings" id = "lasers-settings">
+						<input type = "radio" id = "lasers-set" name = "lasers-settings-buttons"checked>
+						<label for = "lasers-set">Установить</label>
+						<input type = "radio" id = "lasers-delete" name = "lasers-settings-buttons">
+						<label for = "lasers-delete">Удалить</label>
 					</div>
 				</div>
 			</div>
@@ -82,5 +63,9 @@
 		
 	</div>
 	
+	<script src = "demo.js"></script>
+	<script src = "inputs.js"></script>
+	<script src = "vector.js"></script>
+	<script src = "ray.js"></script>
 	<script src = "scripts.js"></script>
 </body>
