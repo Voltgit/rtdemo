@@ -17,13 +17,13 @@ let light = {
 		this.x = x;
 		this.y = y;
 		
-		/*for(let i = 0; i < 2 * Math.PI; i+= Math.PI / this.lightCount){
+		for(let i = 0; i < 2 * Math.PI; i+= Math.PI / this.lightCount){
 			this.rays.push([ Math.cos(i) * this.radius, 
-							 Math.sin(i) * this.radius, 0]);
-		}*/
-		this.rays.push([300, -1000, 5]);
+							 Math.sin(i) * this.radius, 5]);
+		}
+		/*this.rays.push([300, -1000, 5]);
 		this.rays.push([-1000, 0, 5]);
-		this.rays.push([1000, 0, 5]);
+		this.rays.push([1000, 0, 5]);*/
 	},
 	
 };
@@ -54,9 +54,9 @@ let meta = {
 	mirrors: 1,
 	lasers: 2,
 }
-let walls = [[100, 100, 600, 400, meta.walls]];
+let walls = [];//[[100, 100, 600, 400]];
 
-let mirrors = [[500, 100, 700, 109, meta.mirrors]];
+let mirrors = [[500, 100, 700, 109]];//, [390, 290, 550, 230]
 
 let lasers = [];
 
@@ -156,10 +156,9 @@ function drawLights(){
 			
 		}*/
 		
-		let calculatedRay = calcRay(mouseX, mouseY, x2, y2, 5);
 		//console.log(calcRays);
 		if(inputs.light.checked) {
-		
+			let calculatedRay = calcRay(mouseX, mouseY, x2, y2, 5);
 			if(inputs.light.get(1)){
 				for(let [mouseX, mouseY, x2, y2] of calculatedRay){
 					drawLightType1(mouseX, mouseY, x2, y2);
@@ -242,7 +241,7 @@ function onMouseUp(e){
 function checkLaser(line){
 	if(inputs.lasers.get(1)){
 		
-		let [x, y, x2, y2] = line;
+		let [x2, y2, x, y] = line;
 		line = toUnitVector(x, y, x2, y2);
 		lasers.push(new Laser(x, y, line));
 			

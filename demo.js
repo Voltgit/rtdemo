@@ -43,6 +43,14 @@ let Demo = function() {
 		this.g.fill();
 	};
 	
+	this.drawText = function(text, x, y, size = 25, color = "white"){
+		this.g.beginPath();
+		this.g.font = size + "px Arial";
+		this.g.fillStyle = color;
+		this.g.fillText(text, x, y);
+		this.g.closePath();
+	};
+	
 	this.clearScreen = function(){
 		this.g.clearRect(0, 0, WIDTH, HEIGHT);
 	};
